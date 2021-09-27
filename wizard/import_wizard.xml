@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+ <record id="import_raw_data_wizard_action" model="ir.actions.act_window">
+  <field name="name">Import from xls</field>
+  <field name="res_model">import.raw.data.wizard</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">form</field>
+ </record>
+ <menuitem id="import_raw_data_wizard_menu" 
+     parent="raw_data_menu"
+     action="import_raw_data_wizard_action" 
+     sequence="20" />
+ 
+ <record id="import_raw_data_wizard" model="ir.ui.view" >
+  <field name="name">import.spot.budget.raw.data.wizard</field>
+  <field name="model">import.raw.data.wizard</field>
+  <field name="arch" type="xml">
+   <form string="Import from file">
+    <field name="state" invisible="1" />
+    <field name="res_id" invisible="1" />
+    <group states="choose">
+     <field name="import_file" />
+    </group>
+    <group states="get">
+     <p>Import Successful!</p>
+    </group>
+    <footer states="choose">
+     <button name="action_read_file" string="Import file" type="object" class="oe_highlight" />
+      or
+     <button string="cancel" class="oe_link" special="cancel" />
+    </footer>    
+    <footer states="get">     
+     <field name="data_sheets" />
+     <field name="budget_sheet" />
+    </footer>
+    <footer states="get">
+     <button name="action_import_data" string="Read data" type="object" class="oe_highlight" />
+     <button name="action_import_open_inventory_data" string="Read open inventory data" type="object" class="oe_highlight" />
+     <button name="action_import_audience_indicator_data" string="Read audience indicator data" type="object" class="oe_highlight" />
+     <button name="import_desc_standart" string="Import Desc and Standart adv/brand" type="object" class="oe_highlight" />
+     <button name="import_adv_mba_aholding" string="Import Advertise MBAgency, Adv Holding" type="object" class="oe_highlight" />
+     <button name="import_historic_data" string="Import historic data" type="object" class="oe_highlight" />
+     <button string="Close" class="oe_link" special="cancel" />
+     <group>
+      <field name="read_time" />
+      <field name="str_errors" />
+     </group>
+    </footer>    
+   </form>
+  </field>
+ </record>
+</odoo>

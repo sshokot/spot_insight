@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<odoo>
+ <record id="spot_storage_data_action" model="ir.actions.act_window">
+  <field name="name">Storage Data</field>
+  <field name="res_model">spot.storage.data</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_overall_rating_grp_action" model="ir.actions.act_window">
+  <field name="name">Overall Rating GRP</field>
+  <field name="res_model">spot.overall.rating.grp</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_open_inventory_value_action" model="ir.actions.act_window">
+  <field name="name">Spot Open Inventory</field>
+  <field name="res_model">spot.open.inventory.value</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+
+ <menuitem id="storage_data_menu" name="Storage Data" parent="spot_insight_base_menu" />
+ <menuitem id="spot_storage_data_menu" name="Spot Data" parent="storage_data_menu" action="spot_storage_data_action" />
+ <menuitem id="spot_overall_rating_grp" name="Overall Rating GRP" parent="storage_data_menu" action="spot_overall_rating_grp_action" />
+ <menuitem id="spot_open_inventory_value" name="Open Inventory Value" parent="storage_data_menu" action="spot_open_inventory_value_action" />
+ 
+ <record id="storage_data_view_tree" model="ir.ui.view" >
+  <field name="name">spot.storage.view.tree</field>
+  <field name="model">spot.storage.data</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="release_date" />
+    <field name="tv_company" />
+    <field name="spot_start_time" />
+    <field name="spot_end_time" />
+    <field name="duration" />
+    <field name="advertiser" />
+    <field name="brand" />
+    <field name="product_category" />
+    <field name="advertise_holding" />
+    <field name="media_buying_agency" />
+    <field name="media_seller" />
+    <field name="inner_block_type" />
+    <field name="into_prime_time" />    
+    <field name="spot_cost" />
+    <field name="spot_position" />
+    <field name="spot_count" />
+    <field name="is_zero_budget" />
+    <field name="budget_vat_less" />
+    <field name="budget_vat" />
+    <field name="spot_raw_id" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_storage_view_search" model="ir.ui.view">
+  <field name="name">spot.storage.view.search</field>
+  <field name="model">spot.storage.data</field>
+  <field name="arch" type="xml">
+   <search>
+    <field name="release_date" />
+    <field name="tv_company" widget="many2one"/>
+    <field name="advertiser" />
+    <field name="brand" />
+    <searchpanel>   
+<!--     <field name="release_date" />  -->
+     <field name="tv_company" icon="fa fa-list" select="multi" />
+     <field name="advertiser" icon="fa fa-list" select="multi" />
+    </searchpanel>
+   </search>
+  </field>
+ </record>
+
+ <record id="spot_overall_rating_grp_view_tree" model="ir.ui.view">
+  <field name="name">Spot Overall Rating GRP</field>
+  <field name="model">spot.overall.rating.grp</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="id_storage_data" />
+    <field name="audience" />
+    <field name="rating_grp" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_open_inventory_value_view_tree" model="ir.ui.view">
+  <field name="name">Spot Open Inventory Value</field>
+  <field name="model">spot.open.inventory.value</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="date_month" />
+    <field name="tv_company" />
+    <field name="audience" />
+    <field name="value" />
+   </tree>
+  </field>
+ </record>
+</odoo>
+

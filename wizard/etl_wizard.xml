@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<odoo>
+ <record id="etl_spot_raw_wizard_action" model="ir.actions.act_window">
+  <field name="name">etl spot raw wizard action</field>
+  <field name="res_model">etl.spot.raw.data</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">form</field>  
+ </record>
+
+ <menuitem id="etl_spot_raw_wizard_menu" name="ETL raw data" parent="storage_data_menu" action="etl_spot_raw_wizard_action" />
+ 
+
+ <record id="etl_spot_raw_wizard_view_form" model="ir.ui.view">
+  <field name="name">etl.spot.raw.wizard.view.form</field>
+  <field name="model">etl.spot.raw.data</field>
+  <field name="arch" type="xml">
+   <form>
+    <button name="check_raw_records" string="Check Spot Raw Records To Import" type="object" />
+    <button name="etl_by_media" string="ETL Spot Raw Data" type="object" />
+    <button name="test_read" string="Test Read Мир" type="object" />
+    <button name="clear_env_caches" string="Clear Caches" type="object" />
+    <field name="record_amount" />
+    <field name="tv_media_list" />
+    <field name="read_time" />
+   </form>
+  </field>
+ </record>
+ 
+</odoo>

@@ -1,0 +1,164 @@
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError, RedirectWarning
+import xlrd
+import base64
+import datetime
+import pdb
+from threading import Thread
+
+class ImportRawDataWizard(models.TransientModel):
+    """ This wizard is used to import from 
+       xls file in new record raw data """
+    _name = 'import.raw.data.wizard'
+    _description = 'Wizard for import raw data from xls'
+
+    import_file = fields.Binary(string='Import File (.xls)')
+    res_id = fields.Integer(string='Resource ID', readonly=True,)
+    state = fields.Selection([('choose','Choose'),('get','Get')],
+        default='choose')
+    data_sheets = fields.Char(string="Data sheets")
+    budget_sheet = fields.Char(string="Sheet with budget data")
+    read_time = fields.Char(string="Read data time")
+    str_errors = fields.Char(string="Import errors")
+
+    def action_read_file(self):
+        self.ensure_one()
+        if self.import_file:
+            "Import file to read spot raw data"
+            budget_pattern_list = ["дата выхода","release date"]
+            spot_pattern_list = ["Spot TVCompany".lower()]
+            decoded_data = base64.decodebytes(self.import_file)
+            wb = xlrd.open_workbook(file_contents=decoded_data)
+            str_data = ''
+            budget_sheet = ''
+            for sheet_name in wb.sheet_names():
+                is_budget = False
+                is_spot = False
+                sheet = wb.sheet_by_name(sheet_name)
+                rows = sheet.nrows
+                cells = sheet.ncols
+                str_data += ' '+sheet_name+': '+str(rows)+' rows;'
+                for cr_row in range(0,5):
+                    for cr_cell in range(0,5):
+                        cell_type = sheet.cell_type(cr_row, cr_cell)
+                        cell_value = sheet.cell_value(cr_row, cr_cell)
+                        if cell_type == 1:
+                            if cell_value.lower() in budget_pattern_list:
+                                is_budget = True
+                                is_spot = False
+                                budget_sheet = sheet_name
+                                break
+                            elif cell_value.lower() in spot_pattern_list:
+                                is_budget = False
+                                is_spot = True
+                                break
+                    if is_budget or is_spot:
+                        break
+            self.write({'data_sheets': str_data})
+        else:
+            raise ValidationError(_('Please select Excel file to import'))
+        self.write({'state': 'get', 'budget_sheet':budget_sheet})
+        return True
+
+    def import_raw_data(self, act_model, act_sheet, date_mode, record_setting):
+        sheet_name = act_sheet.name
+        rows = act_sheet.nrows
+        cells = act_sheet.ncols
+        zero_date =  datetime.datetime(1899,12,31)
+        str_errors = self.str_errors if self.str_errors else ''
+        is_data = False
+        print('START ROWS %s '%(sheet_name), str(rows), fields.Datetime.now().strftime("%d/%m/%Y,%H:%M:%S"))
+        vals = []
+        for cr_row in range(0, rows):
+        #    pdb.set_trace()
+            search_domain = ['&']
+            release_date = datetime.datetime(1900,1,1)
+            fact_start_time = datetime.datetime(1900,1,1)
+            record_val = {}
+            for cr_cell in range(0, cells):
+                cell_type = act_sheet.cell_type(cr_row, cr_cell)
+                cell_value = act_sheet.cell_value(cr_row, cr_cell)
+                if not cell_value:
+                    #str_errors += ' emty val ('+str(cr_row)+','+str(cr_cell)+')' 
+                    continue
+                rec_value = cell_value
+                if cell_type == 3:
+                    is_data = True
+                    rec_value = xlrd.xldate.xldate_as_datetime(cell_value,date_mode)
+                    if cell_value < 1:
+                        time_delta = rec_value - zero_date
+                        rec_value = release_date + time_delta
+                    elif cell_value < 2:
+                        time_delta = rec_value - zero_date
+                        rec_value = release_date + time_delta
+                    else:
+                        release_date = rec_value
+                if cr_cell in record_setting:
+                    record_val[record_setting[cr_cell]] = rec_value
+            if is_data:
+                try:
+                    for k, v in record_val.items():
+                        search_domain.append((k,'=',v))
+                        #print(search_domain)
+                    act_recs = act_model.search(search_domain)
+                    if not act_recs:
+                        #act_model.create(record_val)
+                        vals.append(record_val)
+                except ValueError:
+                    str_errors += '  search error '+str(search_domain)
+                    print('ERRORS ',str_errors)
+                   # break
+            #if cr_row >5:
+            #    break
+        if vals:
+            act_model.create(vals)
+        print('END ROWS ', str(rows), fields.Datetime.now().strftime("%d/%m/%Y,%H:%M:%S"))
+        if str_errors:
+            self.write({'str_errors':str_errors})
+
+    def import_budget_raw_data(self, sheet, date_mode):
+        m_budget_raw_data = self.env['budget.raw.data']
+        #budget.raw.data: release_date - 0 cell, spot_tv_company - 1 cell,
+        #                 time_keeping - 2 cell, budget_vat_less - 3 cell, fact_start_time - 4 cell
+        record_setting = {0:'release_date', 1:'spot_tv_company', 2:'time_keeping', 3:'budget_vat_less',
+            4:'fact_start_time'}
+        self.import_raw_data(m_budget_raw_data, sheet, date_mode, record_setting)
+
+    def import_spot_raw_data(self, sheet, date_mode):
+        m_spot_raw_data = self.env['spot.raw.data']
+  # spot.raw.model: spot_tv_company - 0 cell, release_date - 1 cell, spot_start_time - 2 cell,
+  #     spot_end_time - 3 cell, spot_duration - 4 cell, advertiser - 5 cell, brand - 6 cell,
+  #     model_name - 7 cell, article_level - 8 cell, clip_description - 9 cell, program - 10 cell,
+  #     spot_cost - 11 cell, break_title - 12 cell, spot_position - 13 cell, spots_count - 14 cell,
+  #     total_ind - 15 cell, all_18 - 16 cell, all_6_54 - 17 cell
+        record_setting = {0:'spot_tv_company', 1:'release_date', 2:'spot_start_time', 3:'spot_end_time',
+            4:'spot_duration',5:'advertiser', 6:'brand', 7:'model_name', 8:'article_level', 9:'clip_description',
+            10:'program', 11:'spot_cost', 12:'break_title', 13:'spot_position', 14:'spots_count', 15:'total_ind',
+            16:'all_18', 17:'all_6_54'}
+        self.import_raw_data(m_spot_raw_data, sheet, date_mode, record_setting)
+
+
+    def action_import_data(self):
+        self.ensure_one()
+        if self.import_file:
+            decoded_data = base64.decodebytes(self.import_file)
+            wb = xlrd.open_workbook(file_contents=decoded_data)
+            date_mode = wb.datemode
+            full_read_time = 'start '+fields.Datetime.now().strftime("%d/%m/%Y,%H:%M:%S")
+            
+            for sheet_name in wb.sheet_names():
+                act_sheet = wb.sheet_by_name(sheet_name)
+                if sheet_name == self.budget_sheet:
+                     th = Thread(target=self.import_budget_raw_data, args=(act_sheet, date_mode))
+                     th.start()
+                     th.join()
+               #     self.import_budget_raw_data(act_sheet, date_mode)
+                else:
+                     th = Thread(target=self.import_spot_raw_data, args=(self, act_sheet, date_mode))
+               #     self.import_spot_raw_data(act_sheet, date_mode)
+                    #break
+            full_read_time += ' - end '+fields.Datetime.now().strftime('%d/%m/%Y, %H:%M:%S')
+            self.write({'read_time': full_read_time}) 
+        else:
+            raise ValidationError(_('Error read data'))
+        return True

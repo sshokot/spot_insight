@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<odoo>
+ <record id="action_budget_volume" model="ir.actions.act_window">
+        <field name="name">Budget Volume Action</field>
+        <field name="res_model">spot.budget.volume</field>
+        <field name="view_mode">pivot,graph</field>
+ </record>
+ <menuitem id="spot_analytic_menu" name="Analytic Reports" parent="spot_insight_base_menu"/>
+ <menuitem id="spot_budget_volume_menu" name="Budgets Volume" parent="spot_analytic_menu" action="action_budget_volume"/>
+ 
+ <record id="spot_budget_volume_view_pivot" model="ir.ui.view">
+  <field name="name">spot.budget.volume.view.pivot</field>
+  <field name="model">spot.budget.volume</field>
+  <field name="arch" type="xml">
+   <pivot>
+    <field name="tv_company" type="row" />
+    <field name="period_year" type="col" />
+    <field name="period_month" type="col" />
+    <field name="budget_volume" type="measure" />
+   </pivot>
+  </field>
+ </record>
+ <record id="spot_budget_volume_view_search" model="ir.ui.view">
+  <field name="name">spot.budget.volume.view.search</field>
+  <field name="model">spot.budget.volume</field>
+  <field name="arch" type="xml">
+   <search>
+    <field name="tv_company" widget="many2one" />    
+    <filter name="tv_companies" string="tv companies" domain="[('tv_company','in',[])]" />
+    <searchpanel>
+     <field name="tv_company" select="multi"/>
+    </searchpanel>
+   </search>
+  </field>
+ </record>
+ <record id="spot_budget_volume_view_search" model="ir.ui.view">
+  <field name="name">spot.budget.volume.view.search</field>
+  <field name="model">spot.budget.volume</field>
+  <field name="arch" type="xml">
+   <search>
+    <searchpanel>
+     <field name="tv_company" select="multi" />
+    </searchpanel>
+   </search>
+  </field>
+ </record>
+</odoo>

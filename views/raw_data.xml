@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<odoo>
+ <record id="spot_raw_data_action" model="ir.actions.act_window" >
+  <field name="name">Spot Raw Data</field>
+  <field name="res_model">spot.raw.data</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="budget_raw_data_action" model="ir.actions.act_window">
+  <field name="name">Budget Raw Data</field>
+  <field name="res_model">budget.raw.data</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="audience_indicator_raw_data_action" model="ir.actions.act_window">
+  <field name="name">Audience Indicators Raw Data</field>
+  <field name="res_model">audience.indicator.raw.data</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="open_inventory_raw_data_action" model="ir.actions.act_window" >
+  <field name="name">Open Inventory Raw Data</field>
+  <field name="res_model">open.inventory.raw.data</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ 
+ <menuitem id="spot_insight_base_menu" name="Spot Insight" /> 
+ <menuitem id="raw_data_menu" name="Raw Data" parent="spot_insight_base_menu"/>
+ <menuitem id="spot_raw_data_menu" name="Spot" parent="raw_data_menu" action="spot_raw_data_action" />
+ <menuitem id="budget_raw_data_menu" name="Budget" parent="raw_data_menu" action="budget_raw_data_action" />
+ <menuitem id="audience_indicator_raw_data_menu" name="Audience Indicators" parent="raw_data_menu" action="audience_indicator_raw_data_action" />
+ <menuitem id="open_inventory_raw_data_menu" name="Open Inventory" parent="raw_data_menu" action="open_inventory_raw_data_action" />
+ 
+ <record id="spot_raw_data_view_tree" model="ir.ui.view">
+  <field name="name">spot.raw.data.view.tree</field>
+  <field name="model">spot.raw.data</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="spot_storage_id" />
+    <field name="spot_tv_company" />
+    <field name="release_date" />
+    <field name="spot_start_time" />
+    <field name="spot_end_time" />
+    <field name="spot_duration" />
+    <field name="advertiser" />
+    <field name="brand" />
+    <field name="model_name" />  
+    <field name="article_level" />
+    <field name="clip_description" />
+    <field name="program" />
+    <field name="spot_cost" />
+    <field name="break_title" />
+    <field name="spot_position" />
+    <field name="spots_count" />
+    <field name="total_ind" />
+    <field name="all_18" />
+    <field name="all_6_54" />
+   </tree>
+  </field>
+ </record>
+ <record id="budget_raw_data_view_tree" model="ir.ui.view">
+  <field name="name">budget.raw.data.view.tree</field>
+  <field name="model">budget.raw.data</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="spot_tv_company" />
+    <field name="release_date" />
+    <field name="time_keeping" />
+    <field name="budget_vat_less" />
+    <field name="fact_start_time" />
+   </tree>
+  </field>
+ </record>
+ <record id="audience_indicator_raw_data_view_tree" model="ir.ui.view" >
+  <field name="name">audience.indicator.raw.data.view.tree</field>
+  <field name="model">audience.indicator.raw.data</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="data_date" />
+    <field name="spot_tv_company" />
+    <field name="rtg6" />
+    <field name="rtg6_54" />
+    <field name="rtg18" />
+    <field name="share6" />
+    <field name="share6_54" />
+    <field name="share18" />
+   </tree>
+  </field>
+ </record>
+  <record id="open_inventory_raw_data_view_tree" model="ir.ui.view">
+  <field name="name">open.inventory.raw.data.view.tree</field>
+  <field name="model">open.inventory.raw.data</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="data_date" />
+    <field name="spot_tv_company" />    
+    <field name="start_time" />
+    <field name="end_time" />
+    <field name="total_ind" />
+    <field name="all_18" />
+    <field name="all_6_54" />
+   </tree>
+  </field>
+ </record>
+</odoo>

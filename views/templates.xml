@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+ <template id="brands">
+  <t t-call="website.layout">
+   <div class="oe_structure">
+    <section>
+     <div class="container text-center">
+      <h1>Editable text and supports drag and drop.</h1>
+     </div>
+    </section>
+   </div>
+   <div class="container">
+    <t t-foreach="brands" t-as="brand">
+     <div class="card-body" id="card_body">
+      <h3 t-field="brand.name"/>
+     </div>
+    </t>
+   </div>
+
+   <section class="container mt16" contenteditable="False">
+    This is not-editable text after list of brands.
+   </section>
+  </t>
+ </template>
+</odoo>

@@ -1,0 +1,169 @@
+<?xml version="1.0" ?>
+<odoo>
+ <record id="spot_advertiser_action" model="ir.actions.act_window">
+  <field name="name">Advertiser</field>
+  <field name="res_model">spot.advertiser</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_product_category_action" model="ir.actions.act_window">
+  <field name="name">Product Category</field>
+  <field name="res_model">spot.product.category</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_brand_action" model="ir.actions.act_window">
+  <field name="name">Brand</field>
+  <field name="res_model">spot.brand</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_advertise_holding_action" model="ir.actions.act_window">
+  <field name="name">Advertise Holding</field>
+  <field name="res_model">spot.advertise.holding</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_media_buying_agency_action" model="ir.actions.act_window">
+  <field name="name">Media buying Agency</field>
+  <field name="res_model">spot.media.buying.agency</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_media_seller_action" model="ir.actions.act_window">
+  <field name="name">Media Seller</field>
+  <field name="res_model">spot.media.seller</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_advertise_category_action" model="ir.actions.act_window">
+  <field name="name">Advertise Category</field>
+  <field name="res_model">spot.advertise.category</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="spot_indicator_action" model="ir.actions.act_window">
+  <field name="name">Indicator</field>
+  <field name="res_model">spot.indicator</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="period_year_action" model="ir.actions.act_window">
+  <field name="name">Years</field>
+  <field name="res_model">period.year</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ <record id="period_month_action" model="ir.actions.act_window">
+  <field name="name">Month</field>
+  <field name="res_model">period.month</field>
+  <field name="type">ir.actions.act_window</field>
+  <field name="view_mode">tree</field>
+ </record>
+ 
+ <menuitem id="spot_setting_menu" name="Settings" parent="spot_insight_base_menu" />
+ <menuitem id="period_month_menu" name="Month" parent="spot_setting_menu" action="period_month_action" />
+ <menuitem id="period_year_menu" name="Year" parent="spot_setting_menu" action="period_year_action" />
+ <menuitem id="spot_indicator_menu" name="Indicator" parent="spot_setting_menu" action="spot_indicator_action" />
+ <menuitem id="spot_advertise_category_menu" name="Advertise Category" parent="spot_setting_menu" action="spot_advertise_category_action" /> 
+ <menuitem id="spot_media_seller_menu" name="Media Seller" parent="spot_setting_menu" action="spot_media_seller_action" />
+ <menuitem id="spot_media_buying_agency_menu" name="Media Buying Agency" parent="spot_setting_menu" action="spot_media_buying_agency_action" />
+ <menuitem id="spot_advertise_holding_menu" name="Advertise Holding" parent="spot_setting_menu" action="spot_advertise_holding_action" />
+ <menuitem id="spot_brand_menu" name="Brand" parent="spot_setting_menu" action="spot_brand_action"/>
+ <menuitem id="spot_product_category_menu" name="Product Category" parent="spot_setting_menu" action="spot_product_category_action" />
+ <menuitem id="spot_advertiser_menu" name="Advertisers" parent="spot_setting_menu" action="spot_advertiser_action" />
+
+ <record id="period_year_view_tree" model="ir.ui.view">
+  <field name="name">period.year.view.tree</field>
+  <field name="model">period.year</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+    <field name="begin_date" />
+    <record id="spot__view_tree" model="ir.ui.view">
+  <field name="name">spot..view.tree</field>
+  <field name="model">spot.</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+
+   </tree>
+  </field>
+ </record>
+ <record id="spot_indicator_view_tree" model="ir.ui.view">
+  <field name="name">spot.indicator.view.tree</field>
+  <field name="model">spot.indicator</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_advertise_category_view_tree" model="ir.ui.view">
+  <field name="name">spot.advertise.category.view.tree</field>
+  <field name="model">spot.advertise.category</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_media_seller_view_tree" model="ir.ui.view">
+  <field name="name">spot.media.seller.view.tree</field>
+  <field name="model">spot.media.seller</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_media_buying_agency_view_tree" model="ir.ui.view">
+  <field name="name">spot.media.buying.agency.view.tree</field>
+  <field name="model">spot.media.buying.agency</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_advertise_holding_view_tree" model="ir.ui.view">
+  <field name="name">spot.advertise.holding.view.tree</field>
+  <field name="model">spot.advertise.holding</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_brand_view_tree" model="ir.ui.view">
+  <field name="name">spot.brand.view.tree</field>
+  <field name="model">spot.brand</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+ <record id="spot_product_category_view_tree" model="ir.ui.view">
+  <field name="name">spot.product.category.view.tree</field>
+  <field name="model">spot.product.category</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+
+ <record id="spot_advertiser_view_tree" model="ir.ui.view" > 
+  <field name="name">spot.advertiser.view.tree</field>
+  <field name="model">spot.advertiser</field>
+  <field name="arch" type="xml">
+   <tree>
+    <field name="name" />
+   </tree>
+  </field>
+ </record>
+</odoo>
